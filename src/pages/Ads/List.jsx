@@ -149,6 +149,7 @@ const Status = ({ data, setData }) => {
             value={data}
             onChange={(e) => setData(e.target.value)}
         >
+            <MenuItem value={""}>All</MenuItem>
             <MenuItem value={"accepted"}>Accepted</MenuItem>
             <MenuItem value={"pending"}>Pending</MenuItem>
             <MenuItem value={"canceled"}>Canceled</MenuItem>
