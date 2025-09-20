@@ -1,0 +1,23 @@
+.tableItem {
+    .tableHover {
+        position: absolute;
+        width: 55px;
+        height: 100%;
+        background: #e9efff;
+        left: 0;
+        top: 0;
+        z-index: 0;
+        transition: .7s;
+    }
+    &:hover {
+      .tableHover {
+            width: 100%;
+        }  
+    } 
+}
+
+.MuiFormControlLabel-label {
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    color: #323449 !important;
+}
