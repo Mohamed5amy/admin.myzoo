@@ -1,5 +1,5 @@
 import "./Sidebar.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // images
 import { Stack, Typography } from "@mui/material";
 import logoImg from "@/images/logo.png";
@@ -12,6 +12,7 @@ import countryIcon from '@/icons/country.json';
 import cityIcon from '@/icons/city.json';
 import scategoriesIcon from '@/icons/scategories.json';
 import adsIcon from '@/icons/ads.json';
+import { useSignOut } from "react-auth-kit";
 // import equipmentsIcon from '@/icons/equipments.json';
 
 const Sidebar = ({ active }) => {
@@ -49,15 +50,16 @@ const Sidebar = ({ active }) => {
         },
     ];
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     // Name
     // const user = JSON.parse(localStorage.getItem('user'))  
     // const name = user.first_name
-
+    const signOut = useSignOut()
     // handle logOut
     const logOut = async () => {
-        
+        signOut()
+        navigate("/")
     };
 
     return (

@@ -55,6 +55,9 @@ const Login = () => {
     // Logic End
     setLoading(false)
   }
+
+  const date = new Date();
+
   
   return (
     <Stack width={"100%"} height={"100vh"} flexDirection={"row"} alignItems={"center"} justifyContent={"center"}>
@@ -81,6 +84,9 @@ const Login = () => {
             <CircularProgress /> : <Typography variant="button" color={"primary.white"} >Login</Typography>}
           </Button>
         </form>
+        <Typography variant="subtitle" color={"text.secondary"} fontWeight={500} position={"absolute"} bottom={10}>
+        Copyright © {date.getFullYear()}&nbsp; MyZoo All Rights Reserved. Developed By&nbsp;<a href="https://www.s-plus.me/" target="_blank" rel="noreferrer">SPlus</a>
+        </Typography>
       </Box>
       {/* Image */}
       <Box flex={1} height={"100%"} bgcolor={"primary.main"} display={{xs : "none" , md : "flex"}} alignItems={"center"} justifyContent={"center"}>

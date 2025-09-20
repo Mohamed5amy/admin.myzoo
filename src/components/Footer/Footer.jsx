@@ -14,7 +14,7 @@ const Footer = () => {
             fontSize={{ xs: 12, sm: 16 }}
             width={"100%"}
         >
-            © {date.getFullYear()}&nbsp;All Rights Reserved&nbsp;
+            Copyright © {date.getFullYear()}&nbsp; MyZoo All Rights Reserved. Developed By&nbsp; <a href="https://www.s-plus.me/" target="_blank" rel="noreferrer">SPlus</a>
         </Stack>
     );
 };
