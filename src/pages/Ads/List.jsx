@@ -52,7 +52,7 @@ const List = () => {
         const fetchItems = async () => {
             setLoading(true);
             // Logic Starts
-            const res = await fetchAds(1 , minPrice, maxPrice, sorting, countries, cities, categories, sCategories, status);
+            const res = await fetchAds(page , minPrice, maxPrice, sorting, countries, cities, categories, sCategories, status);
             console.log(res)
             if (res.status) {
                 const ads = res.data.ad.data;

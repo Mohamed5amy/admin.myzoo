@@ -29,7 +29,12 @@ const Sidebar = ({ active }) => {
             to: "/ads",
         },
         {
-            name: "Main Categories",
+            name: "General Categories",
+            icon: categoriesIcon,
+            to: "/general-categories",
+        },
+        {
+            name: "Categories",
             icon: categoriesIcon,
             to: "/categories",
         },

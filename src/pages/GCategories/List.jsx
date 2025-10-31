@@ -13,23 +13,23 @@ import { toast } from "react-toastify";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import { AddCircleOutlineOutlined } from "@mui/icons-material";
-import { deleteSCategory, fetchSCategories } from "@/APIs/SCategories";
+import { deleteGCategory, fetchGCategories } from "@/APIs/GCategories";
 
 
 const List = () => {
     
-    const headers = ["Sub Category Name" , "Category" , "Added At" ];
-    const body = ["name" ,"category_name" ,"created_at"];
+    const headers = ["Category Name" , "Added At" ];
+    const body = ["name" ,"created_at"];
 
     const [loading, setLoading] = useState(false);
     const [items, setItems] = useState([]);
-    
+
     // Get items
     useEffect(() => {
         const fetchItems = async () => {
             setLoading(true);
             // Logic Starts
-            const res = await fetchSCategories()
+            const res = await fetchGCategories()
             console.log(res)
             if (res.status) {
                 const categories = res.data.category;
@@ -37,7 +37,6 @@ const List = () => {
                     id : category.id,
                     created_at : format(category.created_at , "dd, MMM yyyy"),
                     name : category.name,
-                    category_name : category.main_category?.name || "N/A"
                 })))
             } else {
                 toast.error(res)
@@ -51,9 +50,9 @@ const List = () => {
 
     // Handle Delete
     const handleDelete = async (id) => {
-        const res = await deleteSCategory(id)
+        const res = await deleteGCategory(id)
         if (res.status) {
-            toast.success("Sub Category Deleted successfully")
+            toast.success("Category Deleted successfully")
             window.location.reload()
         } else {
             toast.error(res)
@@ -68,7 +67,7 @@ const List = () => {
                 <Stack direction={"row"} spacing={8} alignItems={"center"}>
                     <Link to={"add"}>
                         <Button startIcon={<AddCircleOutlineOutlined />} variant="contained" sx={{ p: "16px 40px", borderRadius: "8px" }}>
-                            Add Sub Category
+                            Add General Category
                         </Button>
                     </Link>
                     <CSVLink data={items.length > 0 ? items : []}>
@@ -82,7 +81,7 @@ const List = () => {
             <Table headers={headers} data={items} loading={loading} body={body} edit={true} deleteFn={handleDelete} />
             {/* Number */}
             <Stack direction={"row"} spacing={8} alignItems={"center"} justifyContent={"space-between"}>
-                <Typography fontWeight={500} mt={8} color={"text.secondary"}> Total Sub Categories : {items.length} </Typography>
+                <Typography fontWeight={500} mt={8} color={"text.secondary"}> Total Categories : {items.length} </Typography>
             </Stack>
         </Container>
     );

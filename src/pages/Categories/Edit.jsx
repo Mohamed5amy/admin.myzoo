@@ -9,6 +9,8 @@ import SubmitSection from "@/components/SubmitSection";
 import { toast } from "react-toastify";
 import ImageUploader from "@/components/ImageUploader/ImageUploader";
 import { editCategory, fetchCategory } from "@/APIs/Categories";
+import Select from "@/components/Select/Select";
+import { fetchGCategories } from "@/APIs/GCategories";
 
 
 const Edit = () => {
@@ -31,6 +33,7 @@ const Edit = () => {
                 })
                 setDefaultValues({
                     image : newData.image,
+                    general_category_id : newData.general_category_id,
                 })
             } else {
                 toast.error("Something went wrong fetching the category")
@@ -45,6 +48,7 @@ const Edit = () => {
         setLoading(true);
         const formData = new FormData();
         formData.append('name', data.name);
+        formData.append('general_category_id', data.general_category_id);
         formData.append('_method', "PUT");
         if (!image && !defaultValues?.image) {
             toast.error("Image is required");
@@ -100,6 +104,9 @@ const CategoryDataInputs = ({register , errors , onImageChange , defaultValues})
                 />
             </Grid>
             <Grid item xs={12} md={6}>
+                <SelectCategory register={register} errors={errors} defaultValues={defaultValues} />
+            </Grid>
+            <Grid item xs={12} md={6}>
                 <ImageUploader
                     label="Category Image"
                     required={true}
@@ -111,5 +118,42 @@ const CategoryDataInputs = ({register , errors , onImageChange , defaultValues})
         </Grid>
     )
 };
+
+const SelectCategory = ({register , errors , defaultValues}) => {
+
+    const [items, setItems] = useState([]);
+
+    // Get items
+    useEffect(() => {
+        const fetchItems = async () => {
+            const res = await fetchGCategories()
+            console.log(res)
+            if (res.status) {
+                const categories = res.data.category;
+                setItems(categories.map(category => ({
+                    id : category.id,
+                    name : category.name,
+                })))
+            } else {
+                toast.error(res)
+            }
+        }
+        fetchItems()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    
+    return (
+        <Select
+            register={register}
+            registerName="main_category_id"
+            error={errors?.general_category_id?.message}
+            data={items}
+            name={"name"}
+            defaultValue={defaultValues?.general_category_id || ""}
+            label={"General Category"}
+            required={true}
+        />
+    )
+}
 
 export default Edit;

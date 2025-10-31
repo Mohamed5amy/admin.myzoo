@@ -3,14 +3,12 @@ import Back from "@/components/Back/Back";
 import Container from "@/components/Container/Container";
 import Input from "@/components/Input/Input";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SubmitSection from "@/components/SubmitSection";
 import { toast } from "react-toastify";
-import { addCategory } from "@/APIs/Categories";
 import ImageUploader from "@/components/ImageUploader/ImageUploader";
-import Select from "@/components/Select/Select";
-import { fetchGCategories } from "@/APIs/GCategories";
+import { addGCategory } from "@/APIs/GCategories";
 
 
 const Add = () => {
@@ -23,9 +21,10 @@ const Add = () => {
     // Handle Submit
     const onSubmit = async (data) => {
         setLoading(true);
+        // Append Data
         const formData = new FormData();
         formData.append('name', data.name);
-        formData.append('general_category_id', data.general_category_id);
+        // Handle Image
         if (!image) {
             toast.error("Image is required");
             setLoading(false);
@@ -33,10 +32,11 @@ const Add = () => {
         } else {
             formData.append('image', image);
         }
-        const response = await addCategory(formData);
+        // Request
+        const response = await addGCategory(formData);
         if (response.status) {
             toast.success("Category added successfully");
-            navigate("/categories")
+            navigate("/general-categories")
         } else {
             toast.error(response)
         }
@@ -80,9 +80,6 @@ const CategoryDataInputs = ({register , errors , onImageChange}) => {
                 />
             </Grid>
             <Grid item xs={12} md={6}>
-                <SelectCategory register={register} errors={errors} />
-            </Grid>
-            <Grid item xs={12} md={6}>
                 <ImageUploader 
                     label="Category Image"
                     required={true}
@@ -93,41 +90,5 @@ const CategoryDataInputs = ({register , errors , onImageChange}) => {
         </Grid>
     )
 };
-
-const SelectCategory = ({register , errors}) => {
-
-    const [items, setItems] = useState([]);
-
-    // Get items
-    useEffect(() => {
-        const fetchItems = async () => {
-            const res = await fetchGCategories()
-            console.log(res)
-            if (res.status) {
-                const categories = res.data.category;
-                setItems(categories.map(category => ({
-                    id : category.id,
-                    name : category.name,
-                })))
-            } else {
-                toast.error(res)
-            }
-        }
-        fetchItems()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    
-    return (
-        <Select
-            register={register}
-            registerName="general_category_id"
-            error={errors?.general_category_id?.message}
-            data={items}
-            name={"name"}
-            label={"General Category"}
-            required={true}
-        />
-    )
-}
 
 export default Add;

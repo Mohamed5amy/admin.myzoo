@@ -20,6 +20,10 @@ import Countries_Edit from "./pages/Countries/Edit";
 import Cities_List from "./pages/Cities/List";
 import Cities_Add from "./pages/Cities/Add";
 import Cities_Edit from "./pages/Cities/Edit";
+// General Categories Pages
+import GCategories_List from "./pages/GCategories/List";
+import GCategories_Add from "./pages/GCategories/Add";
+import GCategories_Edit from "./pages/GCategories/Edit";
 // Categories Pages
 import Categories_List from "./pages/Categories/List";
 import Categories_Add from "./pages/Categories/Add";
@@ -164,6 +168,10 @@ const MyApp = () => {
                 <Route path="/cities" element={<RequireAuth loginPath="/"><Cities_List /></RequireAuth>} />
                 <Route path="/cities/edit/:id" element={<RequireAuth loginPath="/"><Cities_Edit /></RequireAuth>} />
                 <Route path="/cities/add" element={<RequireAuth loginPath="/"><Cities_Add /></RequireAuth>} />
+                {/* General Categories */}
+                <Route path="/general-categories" element={<RequireAuth loginPath="/"><GCategories_List /></RequireAuth>} />
+                <Route path="/general-categories/edit/:id" element={<RequireAuth loginPath="/"><GCategories_Edit /></RequireAuth>} />
+                <Route path="/general-categories/add" element={<RequireAuth loginPath="/"><GCategories_Add /></RequireAuth>} />
                 {/* Categories */}
                 <Route path="/categories" element={<RequireAuth loginPath="/"><Categories_List /></RequireAuth>} />
                 <Route path="/categories/edit/:id" element={<RequireAuth loginPath="/"><Categories_Edit /></RequireAuth>} />
