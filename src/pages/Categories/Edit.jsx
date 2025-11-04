@@ -28,12 +28,13 @@ const Edit = () => {
             const category = await fetchCategory(id)
             if (category.status) {
                 const newData = category.data.category;
+                console.log(newData)
                 reset({
                     name : newData.name,
                 })
                 setDefaultValues({
-                    image : newData.image,
                     general_category_id : newData.general_category_id,
+                    image : newData.image,
                 })
             } else {
                 toast.error("Something went wrong fetching the category")
@@ -46,6 +47,7 @@ const Edit = () => {
     // Handle Submit
     const onSubmit = async (data) => {
         setLoading(true);
+        console.log(data)
         const formData = new FormData();
         formData.append('name', data.name);
         formData.append('general_category_id', data.general_category_id);
@@ -122,6 +124,7 @@ const CategoryDataInputs = ({register , errors , onImageChange , defaultValues})
 const SelectCategory = ({register , errors , defaultValues}) => {
 
     const [items, setItems] = useState([]);
+    console.log(defaultValues)
 
     // Get items
     useEffect(() => {
@@ -145,7 +148,7 @@ const SelectCategory = ({register , errors , defaultValues}) => {
     return (
         <Select
             register={register}
-            registerName="main_category_id"
+            registerName="general_category_id"
             error={errors?.general_category_id?.message}
             data={items}
             name={"name"}

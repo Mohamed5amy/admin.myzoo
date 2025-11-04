@@ -22,6 +22,7 @@ import { fetchCities } from "@/APIs/Cities";
 import { fetchCategories } from "@/APIs/Categories";
 import { fetchSCategories } from "@/APIs/SCategories";
 import { useDebounce } from "@/hooks/useDebounce";
+import { fetchGCategories } from "@/APIs/GCategories";
 
 
 const List = () => {
@@ -39,6 +40,7 @@ const List = () => {
     const [sorting, setSorting] = useState(1);
     const [countries, setCountries] = useState("");
     const [cities, setCities] = useState("");
+    const [gcategories, setGCategories] = useState("");
     const [categories, setCategories] = useState("");
     const [sCategories, setSCategories] = useState("");
     const [status, setStatus] = useState("");
@@ -52,7 +54,7 @@ const List = () => {
         const fetchItems = async () => {
             setLoading(true);
             // Logic Starts
-            const res = await fetchAds(page , minPrice, maxPrice, sorting, countries, cities, categories, sCategories, status);
+            const res = await fetchAds(page , minPrice, maxPrice, sorting, countries, cities, gcategories, categories, sCategories, status);
             console.log(res)
             if (res.status) {
                 const ads = res.data.ad.data;
@@ -74,20 +76,21 @@ const List = () => {
         }
         fetchItems()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page , minDebounce, maxDebounce, sorting, countries, cities, categories, sCategories, status]);
+    }, [page , minDebounce, maxDebounce, sorting, countries, cities, gcategories, categories, sCategories, status]);
 
     return (
         <Container>
             {/* Filter */}
             <Grid container  mb={8} spacing={{ xs: 4, sm: 6, md: 8 }} alignItems={"center"}>
-                <Grid item xs={6} sm={6} md={3}><Categories data={categories} setData={setCategories} /></Grid>
-                <Grid item xs={6} sm={6} md={3}><SCategories data={sCategories} setData={setSCategories} /></Grid>
-                <Grid item xs={6} sm={6} md={3}><Countries data={countries} setData={setCountries} /></Grid>
-                <Grid item xs={6} sm={6} md={3}><Cities data={cities} setData={setCities} /></Grid>
-                <Grid item xs={6} sm={6} md={3}><MinMoney data={minPrice} setData={setMinPrice} /></Grid>
-                <Grid item xs={6} sm={6} md={3}><MaxMoney data={maxPrice} setData={setMaxPrice} /></Grid>
-                <Grid item xs={6} sm={6} md={3}><Sorting data={sorting} setData={setSorting} /></Grid>
-                <Grid item xs={6} sm={6} md={3}><Status data={status} setData={setStatus} /></Grid>
+                <Grid item xs={6} sm={6} md={4}><GCategories data={gcategories} setData={setGCategories} /></Grid>
+                <Grid item xs={6} sm={6} md={4}><Categories data={categories} setData={setCategories} gCatId={gcategories} /></Grid>
+                <Grid item xs={6} sm={6} md={4}><SCategories data={sCategories} setData={setSCategories} gCatId={gcategories} catId={categories} /></Grid>
+                <Grid item xs={6} sm={6} md={2}><Countries data={countries} setData={setCountries} /></Grid>
+                <Grid item xs={6} sm={6} md={2}><Cities data={cities} setData={setCities} /></Grid>
+                <Grid item xs={6} sm={6} md={2}><MinMoney data={minPrice} setData={setMinPrice} /></Grid>
+                <Grid item xs={6} sm={6} md={2}><MaxMoney data={maxPrice} setData={setMaxPrice} /></Grid>
+                <Grid item xs={6} sm={6} md={2}><Sorting data={sorting} setData={setSorting} /></Grid>
+                <Grid item xs={6} sm={6} md={2}><Status data={status} setData={setStatus} /></Grid>
             </Grid>
             {/* Table */}
             <Table headers={headers} data={items} loading={loading} edit={true} profile={true} body={body} />
@@ -229,14 +232,14 @@ const Cities = ({ data, setData }) => {
     )
 }
 
-const Categories = ({ data, setData }) => {
+const GCategories = ({ data, setData }) => {
 
     const [items, setItems] = useState([]);
 
     // Get items
     useEffect(() => {
         const fetchItems = async () => {
-            const res = await fetchCategories()
+            const res = await fetchGCategories()
             if (res.status) {
                 const categories = res.data.category;
                 setItems(categories.map(category => ({
@@ -252,6 +255,42 @@ const Categories = ({ data, setData }) => {
     }, []);
     
     return (
+        <TextField select sx={{ bgcolor: "primary.white", width: "100%" }} label="General Categories"
+            InputProps={{ startAdornment: (<InputAdornment position="start"><Category color={data && "primary"} /></InputAdornment>) }}
+            value={data}
+            onChange={(e) => setData(e.target.value)}
+        >
+            <MenuItem key={"all"} value={""}>All</MenuItem>
+            {items.map(item => (
+                <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+            ))}
+        </TextField>
+    )
+}
+
+const Categories = ({ data, setData , gCatId }) => {
+
+    const [items, setItems] = useState([]);
+
+    // Get items
+    useEffect(() => {
+        const fetchItems = async () => {
+            const res = await fetchCategories()
+            if (res.status) {
+                const categories = gCatId ? res.data.category.filter(cat => cat.general_category_id === gCatId) : res.data.category;
+                setItems(categories.map(category => ({
+                    id : category.id,
+                    name : category.name,
+                })))
+            } else {
+                toast.error(res)
+            }
+        }
+        fetchItems()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [gCatId]);
+    
+    return (
         <TextField select sx={{ bgcolor: "primary.white", width: "100%" }} label="Categories"
             InputProps={{ startAdornment: (<InputAdornment position="start"><Category color={data && "primary"} /></InputAdornment>) }}
             value={data}
@@ -265,7 +304,7 @@ const Categories = ({ data, setData }) => {
     )
 }
 
-const SCategories = ({ data, setData }) => {
+const SCategories = ({ data, setData , gCatId , catId }) => {
 
     const [items, setItems] = useState([]);
 
@@ -275,7 +314,9 @@ const SCategories = ({ data, setData }) => {
             const res = await fetchSCategories()
             if (res.status) {
                 const categories = res.data.category;
-                setItems(categories.map(category => ({
+                const filteredByGCat = gCatId ? categories.filter(cat => cat.main_category.general_category_id === gCatId) : categories;
+                const filteredByCat = catId ? filteredByGCat.filter(cat => cat.main_category_id === catId) : filteredByGCat;
+                setItems(filteredByCat.map(category => ({
                     id : category.id,
                     name : category.name,
                 })))
@@ -285,7 +326,7 @@ const SCategories = ({ data, setData }) => {
         }
         fetchItems()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [gCatId, catId]);
     
     return (
         <TextField select sx={{ bgcolor: "primary.white", width: "100%" }} label="Sub Categories"

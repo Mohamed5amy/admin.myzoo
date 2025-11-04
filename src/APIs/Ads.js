@@ -1,7 +1,7 @@
 import {api} from './Axios';
 
 // Get All Ads
-export const fetchAds = async (page , minPrice, maxPrice, sorting, countries, cities, categories, sCategories , status) => {
+export const fetchAds = async (page , minPrice, maxPrice, sorting, countries, cities, gcategories, categories, sCategories , status) => {
     try {
         const response = await api.get('/ad' , {
             params : {page , 
@@ -10,6 +10,7 @@ export const fetchAds = async (page , minPrice, maxPrice, sorting, countries, ci
                 ...(sorting == 1 ? {newest:1} : {oldest : 1}), 
                 countries : countries ? [countries] : "", 
                 cities : cities ? [cities] : "", 
+                general_categories : gcategories ? [gcategories] : "", 
                 main_categories : categories ? [categories] : "", 
                 categories : sCategories ? [sCategories] : "",
                 status
@@ -20,6 +21,7 @@ export const fetchAds = async (page , minPrice, maxPrice, sorting, countries, ci
         return err
     }
 }
+
 // Get Single Ad
 export const fetchAd = async (id) => {
     try {
