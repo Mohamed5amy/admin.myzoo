@@ -85,7 +85,7 @@ const Login = () => {
           </Button>
         </form>
         <Typography variant="subtitle" color={"text.secondary"} fontWeight={500} position={"absolute"} bottom={10}>
-        Copyright © {date.getFullYear()}&nbsp; MyZoo All Rights Reserved. Developed By&nbsp;<a href="https://www.s-plus.me/" target="_blank" rel="noreferrer">SPlus</a>
+        Copyright © {date.getFullYear()}&nbsp; MyZoo All Rights Reserved.
         </Typography>
       </Box>
       {/* Image */}
