@@ -36,6 +36,8 @@ import SCategories_Edit from "./pages/SCategories/Edit";
 import Ads_List from "./pages/Ads/List";
 import Ads_Edit from "./pages/Ads/Edit";
 import Ads_Profile from "./pages/Ads/Profile";
+// Banner
+import Banner_List from "./pages/Banner/List";
 
 function App() {
 
@@ -184,6 +186,8 @@ const MyApp = () => {
                 <Route path="/ads" element={<RequireAuth loginPath="/"><Ads_List /></RequireAuth>} />
                 <Route path="/ads/edit/:id" element={<RequireAuth loginPath="/"><Ads_Edit /></RequireAuth>} />
                 <Route path="/ads/:id" element={<RequireAuth loginPath="/"><Ads_Profile /></RequireAuth>} />
+                {/* Banner */}
+                <Route path="/banner" element={<RequireAuth loginPath="/"><Banner_List /></RequireAuth>} />
             </Routes>
         </BrowserRouter>
     );

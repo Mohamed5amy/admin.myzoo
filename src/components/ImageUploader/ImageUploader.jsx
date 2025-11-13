@@ -89,6 +89,9 @@ const ImageUploader = ({ label, required, onImageChange, defaultImage, maxSize =
             bgcolor: "rgba(25, 118, 210, 0.04)"
           }
         }}
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}

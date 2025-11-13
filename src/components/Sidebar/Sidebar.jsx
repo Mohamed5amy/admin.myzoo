@@ -10,6 +10,7 @@ import userIcon from '@/icons/user.json';
 import categoriesIcon from '@/icons/categories.json';
 import countryIcon from '@/icons/country.json';
 import cityIcon from '@/icons/city.json';
+import bannerIcon from '@/icons/banner.json';
 import scategoriesIcon from '@/icons/scategories.json';
 import adsIcon from '@/icons/ads.json';
 import { useSignOut } from "react-auth-kit";
@@ -52,6 +53,11 @@ const Sidebar = ({ active }) => {
             name: "Cities",
             icon: cityIcon,
             to: "/cities",
+        },
+        {
+            name: "Banner",
+            icon: bannerIcon,
+            to: "/banner",
         },
     ];
 
