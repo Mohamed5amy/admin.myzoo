@@ -38,6 +38,8 @@ const Profile = () => {
             <Details item={item} />
             {/* Images */}
             <Images item={item} />
+            {/* Videos */}
+            <Videos item={item} />
         </Container>
     );
 };
@@ -175,6 +177,31 @@ const Images = ({ item }) => {
                     <Grid item xs={12}>
                         <Typography variant="body" color={"text.secondary"}>No images available</Typography>
                     </Grid>
+                )}
+            </Grid>
+        </Box>
+    );
+};
+
+const Videos = ({ item }) => {
+
+    return (
+        <Box bgcolor={"primary.white"} p={"32px 16px"} borderRadius={"12px"} mt={8}>
+            {/* Name && Icons */}
+            <Stack direction={{ xs: "column", sm: "row" }} spacing={{ xs: 4, sm: 0 }} justifyContent={"space-between"} pb={8} mb={12} borderBottom={"1px solid"} borderColor={"primary.border"}>
+                <Typography variant="h3">Videos</Typography>
+            </Stack>
+            {/* Equipment Data */}
+            <Grid container spacing={4}>
+                {item?.videos?.length > 0 ? item.videos.map((vid, i) => (
+                    <Grid item xs={12} sm={6} md={4} key={i}>   
+                        <Box component={"video"} src={vid.url} width={"100%"} height={"200px"} controls sx={{objectFit : "fill"}} borderRadius={"8px"} />
+                    </Grid>
+                )) : (
+                    <Grid item xs={12}>
+                        <Typography variant="body" color={"text.secondary"}>No videos available</Typography>
+                    </Grid>
+                    
                 )}
             </Grid>
         </Box>
